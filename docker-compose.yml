@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  hackrx-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - HACKRX_AUTH_TOKEN=${HACKRX_AUTH_TOKEN}
+      - PINECONE_INDEX_NAME=hackrx-solution
+      - PINECONE_ENVIRONMENT=us-east-1
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Redis for advanced caching (uncomment if needed)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   command: redis-server --appendonly yes
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+
+# volumes:
+#   redis_data:
