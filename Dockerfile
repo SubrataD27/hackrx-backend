@@ -28,4 +28,3 @@ EXPOSE 8000
 # This version explicitly uses a shell (`sh -c`) to ensure the `$PORT`
 # environment variable provided by Railway is correctly interpreted.
 CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
-# --- END OF DOCKERFILE ---
