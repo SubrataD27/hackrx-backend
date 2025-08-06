@@ -1,11 +1,12 @@
 services:
-  # This defines your web application
   - type: web
     name: hackrx-backend
     env: python
-    plan: free # Use Render's free tier
+    plan: free
+    # --- CRITICAL FIX: Install CPU-only torch before other requirements ---
     buildCommand: |
       pip install --upgrade pip
+      pip install torch --index-url https://download.pytorch.org/whl/cpu
       pip install -r requirements.txt
     startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -14,10 +15,8 @@ services:
         value: 3.11.8
       - key: PYTHONPATH
         value: .
-      # This tells Render to get the secret keys from an Environment Group
       - fromGroup: hackrx-secrets
 
-# This defines a secure place to store your secret API keys
 envVarGroups:
   - name: hackrx-secrets
     envVars:
