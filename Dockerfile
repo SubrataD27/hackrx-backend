@@ -11,20 +11,20 @@ WORKDIR /app
 # Copy the requirements file
 COPY requirements.txt .
 
-# --- CRITICAL FIX: Install the small, CPU-only version of torch FIRST ---
-# This prevents the massive GPU version from being installed later.
+# Install the small, CPU-only version of torch FIRST
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 
-# --- Now, install the rest of the packages ---
-# This command is optimized for speed and size.
+# Now, install the rest of the packages
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application's code
 COPY . .
 
-# Expose the port your application runs on
+# Expose a default port (good practice, though Railway will override)
 EXPOSE 8000
 
-# The command to run your application
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# --- CRITICAL FIX: The command to run your application ---
+# This version uses the `$PORT` environment variable provided by Railway.
+# The `exec` command ensures that Uvicorn is the main process.
+CMD exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
