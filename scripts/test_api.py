@@ -25,11 +25,11 @@ TEST_DOCUMENT_ID = "Arogya Sanjeevani Policy.pdf"
 
 # --- Questions that correctly match the TEST_DOCUMENT_ID ---
 TEST_QUESTIONS = [
-    "What is the range for the Sum Insured in this policy?",
-    "Is there a co-payment clause, and if so, what is the percentage?",
-    "What is the waiting period for treatment of joint replacement surgery?",
-    "Are AYUSH treatments like Ayurveda and Homeopathy covered?",
-    "What are the sub-limits on Room Rent and ICU Charges?"
+        "What is the No Claim Discount (NCD) offered in this policy?",
+        "Is there a benefit for preventive health check-ups?",
+        "How does the policy define a 'Hospital'?",
+        "What is the extent of coverage for AYUSH treatments?",
+        "Are there any sub-limits on room rent and ICU charges for Plan A?"
 ]
 
 async def test_health_check():

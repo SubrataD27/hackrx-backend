@@ -1,0 +1,35 @@
+services:
+  # This defines your web application
+  - type: web
+    name: hackrx-backend
+    env: python
+    plan: free # Use Render's free tier
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: PYTHONPATH
+        value: .
+      # This tells Render to get the secret keys from an Environment Group
+      - fromGroup: hackrx-secrets
+
+# This defines a secure place to store your secret API keys
+envVarGroups:
+  - name: hackrx-secrets
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: HACKRX_AUTH_TOKEN
+        sync: false
+      - key: EMBEDDING_MODEL
+        value: "nomic-ai/nomic-embed-text-v1.5"
+      - key: EMBEDDING_DIM
+        value: 768
+      - key: PINECONE_INDEX_NAME
+        value: "hackrx-solution"

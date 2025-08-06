@@ -239,12 +239,3 @@ Expected performance benchmarks:
 - Implement comprehensive error handling
 - Write tests for critical components
 
-
-
-## 📞 Support
-
-For technical issues or questions:
-1. Check the logs: `docker-compose logs hackrx-app`
-2. Verify environment variables are set correctly
-3. Ensure Pinecone index is properly configured
-4. Test API endpoints using the provided test script
