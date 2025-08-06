@@ -24,7 +24,8 @@ COPY . .
 # Expose a default port (good practice, though Railway will override)
 EXPOSE 8000
 
-# --- CRITICAL FIX: The command to run your application ---
-# This version uses the `$PORT` environment variable provided by Railway.
-# The `exec` command ensures that Uvicorn is the main process.
-CMD exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# --- FINAL CRITICAL FIX: The command to run your application ---
+# This version explicitly uses a shell (`sh -c`) to ensure the `$PORT`
+# environment variable provided by Railway is correctly interpreted.
+CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# --- END OF DOCKERFILE ---
