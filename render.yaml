@@ -3,10 +3,8 @@ services:
     name: hackrx-backend
     env: python
     plan: free
-    # --- CRITICAL FIX: Install CPU-only torch before other requirements ---
     buildCommand: |
       pip install --upgrade pip
-      pip install torch --index-url https://download.pytorch.org/whl/cpu
       pip install -r requirements.txt
     startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
@@ -26,9 +24,11 @@ envVarGroups:
         sync: false
       - key: HACKRX_AUTH_TOKEN
         sync: false
+      # --- CRITICAL FIX: Switch to a smaller, memory-efficient model ---
       - key: EMBEDDING_MODEL
-        value: "nomic-ai/nomic-embed-text-v1.5"
+        value: "sentence-transformers/all-MiniLM-L6-v2"
+      # --- CRITICAL FIX: Update the dimension to match the new model ---
       - key: EMBEDDING_DIM
-        value: 768
+        value: 384
       - key: PINECONE_INDEX_NAME
         value: "hackrx-solution"
